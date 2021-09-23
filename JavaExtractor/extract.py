@@ -87,6 +87,7 @@ if __name__ == '__main__':
     if args.file is not None:
         command = 'java -cp ' + args.jar + ' JavaExtractor.App --max_path_length ' + \
                   str(args.max_path_length) + ' --max_path_width ' + str(args.max_path_width) + ' --file ' + args.file
+        print(command)
         os.system(command)
     elif args.dir is not None:
         subdirs = get_immediate_subdirectories(args.dir)
