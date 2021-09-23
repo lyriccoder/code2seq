@@ -1,6 +1,6 @@
 from common import Common
 from java_extractor import JavaExtractor
-from cpp_extractor import CppExtractor
+# from cpp_extractor import CppExtractor
 
 SHOW_TOP_CONTEXTS = 10
 MAX_PATH_LENGTH = 8
@@ -16,8 +16,8 @@ class InteractivePredictor:
         self.config = config
         if language == 'java':
             self.path_extractor = JavaExtractor(config, EXTRACTION_API, self.config.MAX_PATH_LENGTH, max_path_width=2)
-        elif language == 'cpp':
-            self.path_extractor = CppExtractor(config)
+        # elif language == 'cpp':
+        #     self.path_extractor = CppExtractor(config)
         else:
             assert False, 'Unsupported language model'
 
