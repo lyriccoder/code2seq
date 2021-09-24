@@ -50,21 +50,6 @@ class ModelRunner:
             self.model = Model(self.config, self.subtoken_vocab_size, self.target_vocab_size, self.nodes_vocab_size,
                                self.target_to_index)
 
-        if self.config.TRAIN_PATH:
-            self.train_dataset_reader = reader.Reader(subtoken_to_index=self.subtoken_to_index,
-                                                      node_to_index=self.node_to_index,
-                                                      target_to_index=self.target_to_index,
-                                                      config=self.config,
-                                                      is_evaluating=False)
-        else:
-            self.train_dataset_reader = None
-
-        self.test_dataset_reader = reader.Reader(subtoken_to_index=self.subtoken_to_index,
-                                                 node_to_index=self.node_to_index,
-                                                 target_to_index=self.target_to_index,
-                                                 config=self.config,
-                                                 is_evaluating=True)
-
     def train(self):
         print('Starting training')
 

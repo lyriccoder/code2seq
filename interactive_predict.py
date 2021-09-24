@@ -21,13 +21,7 @@ class InteractivePredictor:
         else:
             assert False, 'Unsupported language model'
 
-    @staticmethod
-    def read_file(input_filename):
-        with open(input_filename) as f:
-            return f.read()
-
-    def predict(self, input_filename):
-        code = self.read_file(input_filename)
+    def predict(self, code: str):
         predict_lines, pc_info_dict = self.path_extractor.extract_paths(code)
         model_results = self.model.predict(predict_lines)
 
