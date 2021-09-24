@@ -1,5 +1,6 @@
 import subprocess
-
+import tempfile
+import os
 
 class Extractor:
     def __init__(self, config, jar_path, max_path_length, max_path_width):
@@ -7,12 +8,31 @@ class Extractor:
         self.max_path_length = max_path_length
         self.max_path_width = max_path_width
         self.jar_path = jar_path
-
+    
+    def run_jar(self, code_string: str):
+        tmp = tempfile.NamedTemporaryFile(delete=False)
+        out = None
+        try:
+            tmp.write(bytes(code_string, encoding='utf-8'))
+            tmp.close()
+            command = f'java -cp {self.jar_path} JavaExtractor.App --max_path_length {self.max_path_length} --max_path_width {self.max_path_width} --file {tmp.name}'
+            print(f'running {command}')
+            process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = process.communicate()
+            #print(f'subprocess {out}')
+        finally:
+            if err:
+                print(f'ERROR! PANIC! {err}')
+            tmp.close()
+            os.unlink(tmp.name)
+        return out, err
+        
     def extract_paths(self, path):
-        command = ['java', '-cp', self.jar_path, 'JavaExtractor.App', '--max_path_length',
-                   str(self.max_path_length), '--max_path_width', str(self.max_path_width), '--file', path, '--no_hash']
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = process.communicate()
+        #command = ['java', '-cp', self.jar_path, 'JavaExtractor.App', '--max_path_length',
+                   #str(self.max_path_length), '--max_path_width', str(self.max_path_width), '--file', path, '--no_hash']
+        #print(f'running {command}')
+        #process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = self.run_jar(path)
         output = out.decode().splitlines()
         if len(output) == 0:
             err = err.decode()

@@ -15,7 +15,7 @@ class InteractivePredictor:
         self.model = model
         self.config = config
         if language == 'java':
-            self.path_extractor = Extractor(config, EXTRACTION_API, self.config.MAX_PATH_LENGTH, max_path_width=2)
+            self.path_extractor = Extractor(config, '/hdd/code2seq/JavaExtractor/JPredict/target/JavaExtractor-0.0.1-SNAPSHOT.jar', self.config.MAX_PATH_LENGTH, max_path_width=2)
         # elif language == 'cpp':
         #     self.path_extractor = CppExtractor(config)
         else:
@@ -23,9 +23,11 @@ class InteractivePredictor:
 
     def predict(self, code: str):
         predict_lines, pc_info_dict = self.path_extractor.extract_paths(code)
+        #print(pc_info_dict)
         model_results = self.model.predict(predict_lines)
 
         prediction_results = Common.parse_results(model_results, pc_info_dict, topk=SHOW_TOP_CONTEXTS)
+        print('parsed results')
         for index, method_prediction in prediction_results.items():
             print('Original name:\t' + method_prediction.original_name)
             if self.config.BEAM_WIDTH == 0:
