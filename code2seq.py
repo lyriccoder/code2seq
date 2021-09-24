@@ -31,6 +31,6 @@ if __name__ == '__main__':
         config = Config.get_default_config(args)
 
     model = ModelRunner(config)
-    predictor = InteractivePredictor(config, model,'java')
+    predictor = InteractivePredictor(config, model, 'java')
     with open(args.filepath) as f:
         predictor.predict(f.read())
